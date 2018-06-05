@@ -10,6 +10,8 @@
           </tr>
         </thead>
         <tbody>
+          <!-- {{ name }} -->
+          <form action="{% url 'sentrequest' %}" method = "POST"></form>
           {% for friend in friends %}
             <tr>
                 <td>
@@ -18,8 +20,13 @@
                 <td>
                     {{ friend.last_name }}
                 </td>
+                <td>
+                    {% csrf_token %}
+                    <input type="submit" name="sendrequest" value="Send Request" />     
+                </td>
             </tr>
           {% endfor %}
+        </form>
         </tbody>
       </table>
 
