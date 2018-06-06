@@ -1,5 +1,6 @@
 from django import forms
 
-class SendRequestForm(forms.Form):
-    send_req = forms.CharField(max_length=50)
-    
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length = 50)
+    password = forms.CharField(widget = forms.PasswordInput())

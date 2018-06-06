@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'create/', views.create, name = 'create'),
     url(r'friendlist/', views.friend_list, name='friendlist'),
     url(r'searchlist/', views.search, name='searchlist'),
-    url(r'sentrequest', views.sent_request, name='sentrequest'),
+    url(r'sentrequest/(?P<slug>[-\w]+)/$', views.sent_request, name='sentrequest'),
     url(r'acceptrequest', views.accept_request, name='acceptrequest'),
 
 ]
