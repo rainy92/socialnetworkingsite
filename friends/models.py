@@ -22,7 +22,15 @@ class Connections(models.Model):
 
 
 class FriendRequest(models.Model):
-    from_person = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='form_person')
+    from_person = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='from_person')
     to_person = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='to_person')
     accepted = models.BooleanField(default=False)
+
+
+# class Messages(models.Model):
+#     msg_from = models.ForeignKey(Friends, on_delete=models.CASCADE)
+#     content = models.TextField()
+#     date = models.DateField()
+#     time = models.TimeField()
+
 

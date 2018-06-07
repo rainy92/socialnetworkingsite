@@ -16,13 +16,13 @@
           <form action="{% url 'sentrequest' friend.username %}" method = "POST">
             <tr>
                 <td>
-                    {{ friend.first_name }}
+                    {{ friend.from_person.first_name }}
                 </td>
                 <td>
-                    {{ friend.last_name }}
+                    {{ friend.from_person.last_name }}
                 </td>
                 <td>
-                    {{ friend.username }}
+                    {{ friend.from_person.username }}
                 </td>
                 <td>
                     {% csrf_token %}

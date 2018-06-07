@@ -1,0 +1,24 @@
+{% extends 'user_data.html' %}
+
+{% block friendlist %}
+
+<div class="container">
+    {% for friend in friends %}
+
+        <div class="container">
+            <form action="{% url 'acceptrequest' friend.from_person.username %}" method="POST">
+                <div>
+                    {{ friend.from_person.username }}
+                </div>
+                <div>
+                    {% csrf_token %}
+                    <input type="submit" name="acceptrequest" value="Accept Request" /> 
+                </div>
+            </form>
+
+        </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

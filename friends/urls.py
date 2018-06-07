@@ -10,6 +10,9 @@ urlpatterns = [
     url(r'friendlist/', views.friend_list, name='friendlist'),
     url(r'searchlist/', views.search, name='searchlist'),
     url(r'sentrequest/(?P<slug>[-\w]+)/$', views.sent_request, name='sentrequest'),
-    url(r'acceptrequest', views.accept_request, name='acceptrequest'),
-
+    url(r'acceptrequest/(?P<slug>[-\w]+)/$', views.accept_request, name='acceptrequest'),
+    url(r'showrequests/', views.show_requests, name='showrequests'),
+    url(r'messages/', views.messages, name='messages'),
+    url(r'posts/', views.posts, name='posts'),
+    
 ]
