@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
+from django.views.generic.list import ListView
 from django.db.models import Q
 from .models import Friends, FriendRequest, Connections
 from .forms import LoginForm
@@ -49,15 +50,17 @@ def get_current_user(request):
 def friend_list(request):
     # current_user = Friends.objects.exclude(Q(username = request.session['username']))
     current_user = get_current_user(request)
-    friends = Connections.objects.filter(Q(person=current_user.pk))
-    return render(request, 'friends_details.html', context={'title':'Login', 'username':request.session['username'], 'friends':friends})
+    print(current_user)
+    friends = Connections.objects.filter(Q(person=current_user.pk) | Q(connected_to=current_user.pk))
+    # print(friends.connected_to)
+    return render(request, 'friends_details.html', context={'title':'Login', 'username':request.session['username'], 'friends':friends, 'current_user_name':current_user.username})
 
 
 def search(request):
     if request.method == 'POST':
         # friends = get_object_or_404(Friends, Q(first_name = request.POST['searchbar']))
         friends = Friends.objects.filter(Q(first_name = request.POST['searchbar']))
-        return render(request, 'friends_details.html', context={'title':'Login', 'username':request.session['username'], 'friends': friends})
+        return render(request, 'search_list.html', context={'title':'Login', 'username':request.session['username'], 'friends': friends})
 
 def sent_request(request,slug,*args, **kwargs):
     if request.method == 'POST':
@@ -75,15 +78,15 @@ def accept_request(request, slug):
     if request.method == 'POST':
         # current_user = Friends.objects.get(username = request.session['username'])
         current_user = get_current_user(request)
-        from_users = FriendRequest.objects.filter(Q(to_person=current_user.pk), Q(accepted=False))
+        from_users = FriendRequest.objects.filter(Q(to_person=current_user), Q(accepted=False))
         from_user_pk = None
         for from_user in from_users:
-            from_user_pk = Friends.objects.get(Q(username = slug)).pk
+            from_user_pk = Friends.objects.get(Q(username = slug))
 
-        FriendRequest.objects.filter(Q(to_person=current_user.pk), 
+        FriendRequest.objects.filter(Q(to_person=current_user), 
                                     Q(from_person=from_user_pk), Q(accepted = False)).update(accepted = True)
         connection = Connections()
-        connection.person = current_user.pk
+        connection.person = current_user
         connection.connected_to = from_user_pk
         connection.save()
         return render(request, 'user_data.html', context={'title':'Login', 'username':request.session['username']})
@@ -93,11 +96,21 @@ def show_requests(request):
     current_user = get_current_user(request)
     print(current_user.pk, current_user.username)
     friend_requests = FriendRequest.objects.filter(Q(to_person=current_user.pk), Q(accepted=False))
+    # for friend_request in friend_requests:
+    #     print(friend_request.from_person)
     return render(request, 'requests_list.html', context={'title':'Login',
                      'username':request.session['username'], 'friends':friend_requests})        
 
-def messages(request):
-    pass
+# def messages(request):
+#     pass
 
+class MessagesListView(ListView):
+    # template_name = 'message_list.html'
+    # current_user = Friends.objects.filter(username=get_current_user())
+    # connection = Connections.objects.filter(person=current_user.pk)
+    pass
+    
+
+        
 def posts(request):
     pass

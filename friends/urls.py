@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'sentrequest/(?P<slug>[-\w]+)/$', views.sent_request, name='sentrequest'),
     url(r'acceptrequest/(?P<slug>[-\w]+)/$', views.accept_request, name='acceptrequest'),
     url(r'showrequests/', views.show_requests, name='showrequests'),
-    url(r'messages/', views.messages, name='messages'),
+    url(r'messages/', views.MessagesListView.as_view(), name='messages'),
     url(r'posts/', views.posts, name='posts'),
     
 ]

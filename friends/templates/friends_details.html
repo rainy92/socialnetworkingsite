@@ -1,6 +1,6 @@
 {% extends 'user_data.html' %}
 
-{% block friendlist %}
+{% block listview %}
 
 <table class="table">
         <thead>
@@ -13,21 +13,33 @@
           <!-- {{ name }} -->
           
           {% for friend in friends %}
-          <form action="{% url 'sentrequest' friend.username %}" method = "POST">
+          <!-- <form action="{% url 'sentrequest' friend.connected_to.username %}" method = "POST"> -->
             <tr>
                 <td>
-                    {{ friend.from_person.first_name }}
+                    {% if friend.connected_to.username == current_user_name %}
+                      {{ friend.person.first_name }}
+                    {% else %}
+                      {{ friend.connected_to.first_name }}
+                    {% endif %}
                 </td>
                 <td>
-                    {{ friend.from_person.last_name }}
+                     {% if friend.connected_to.username == current_user_name %}
+                      {{ friend.person.last_name }}
+                    {% else %}
+                      {{ friend.connected_to.last_name }}
+                    {% endif %}
                 </td>
                 <td>
-                    {{ friend.from_person.username }}
+                     {% if friend.connected_to.username == current_user_name %}
+                      {{ friend.person.username }}
+                    {% else %}
+                      {{ friend.connected_to.username }}
+                    {% endif %}
                 </td>
-                <td>
+                <!-- <td>
                     {% csrf_token %}
                     <input type="submit" name="sendrequest" value="Send Request" />     
-                </td>
+                </td> -->
             </tr>
           </form>
           {% endfor %}

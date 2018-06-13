@@ -1,0 +1,38 @@
+{% extends 'user_data.html' %}
+
+{% block listview %}
+
+<table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- {{ name }} -->
+          
+          {% for friend in friends %}
+          <form action="{% url 'sentrequest' friend.username %}" method = "POST">
+            <tr>
+                <td>
+                    {{ friend.first_name }}
+                </td>
+                <td>
+                    {{ friend.last_name }}
+                </td>
+                <td>
+                    {{ friend.username }}
+                </td>
+                <td>
+                    {% csrf_token %}
+                    <input type="submit" name="sendrequest" value="Send Request" />     
+                </td>
+            </tr>
+          </form>
+          {% endfor %}
+        
+        </tbody>
+      </table>
+
+{% endblock %}

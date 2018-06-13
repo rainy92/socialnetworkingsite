@@ -13,8 +13,7 @@ class Friends(models.Model):
     
     def __str__(self):
         return self.first_name
-
-
+        
 
 class Connections(models.Model):
     person = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='person')
