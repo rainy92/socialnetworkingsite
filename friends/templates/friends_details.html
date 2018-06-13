@@ -13,7 +13,7 @@
           <!-- {{ name }} -->
           
           {% for friend in friends %}
-          <!-- <form action="{% url 'sentrequest' friend.connected_to.username %}" method = "POST"> -->
+          <form action="{% url 'messages' %}" method = "POST">
             <tr>
                 <td>
                     {% if friend.connected_to.username == current_user_name %}
@@ -23,23 +23,23 @@
                     {% endif %}
                 </td>
                 <td>
-                     {% if friend.connected_to.username == current_user_name %}
+                    {% if friend.connected_to.username == current_user_name %}
                       {{ friend.person.last_name }}
                     {% else %}
                       {{ friend.connected_to.last_name }}
                     {% endif %}
                 </td>
                 <td>
-                     {% if friend.connected_to.username == current_user_name %}
+                    {% if friend.connected_to.username == current_user_name %}
                       {{ friend.person.username }}
                     {% else %}
                       {{ friend.connected_to.username }}
                     {% endif %}
                 </td>
-                <!-- <td>
+                <td>
                     {% csrf_token %}
-                    <input type="submit" name="sendrequest" value="Send Request" />     
-                </td> -->
+                    <input type="submit" name="message" value="Message" />     
+                </td>
             </tr>
           </form>
           {% endfor %}

@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.views.generic.list import ListView
 from django.db.models import Q
-from .models import Friends, FriendRequest, Connections
+from .models import Friends, FriendRequest, Connections, Messages
 from .forms import LoginForm
+from datetime import datetime
 # import pdb
 
 
@@ -50,7 +51,7 @@ def get_current_user(request):
 def friend_list(request):
     # current_user = Friends.objects.exclude(Q(username = request.session['username']))
     current_user = get_current_user(request)
-    print(current_user)
+    # print(current_user)
     friends = Connections.objects.filter(Q(person=current_user.pk) | Q(connected_to=current_user.pk))
     # print(friends.connected_to)
     return render(request, 'friends_details.html', context={'title':'Login', 'username':request.session['username'], 'friends':friends, 'current_user_name':current_user.username})
@@ -59,8 +60,9 @@ def friend_list(request):
 def search(request):
     if request.method == 'POST':
         # friends = get_object_or_404(Friends, Q(first_name = request.POST['searchbar']))
+        current_user = get_current_user(request)
         friends = Friends.objects.filter(Q(first_name = request.POST['searchbar']))
-        return render(request, 'search_list.html', context={'title':'Login', 'username':request.session['username'], 'friends': friends})
+        return render(request, 'search_list.html', context={'title':'Login', 'username':request.session['username'], 'friends': friends, 'current_user_name':current_user.username})
 
 def sent_request(request,slug,*args, **kwargs):
     if request.method == 'POST':
@@ -101,14 +103,24 @@ def show_requests(request):
     return render(request, 'requests_list.html', context={'title':'Login',
                      'username':request.session['username'], 'friends':friend_requests})        
 
-# def messages(request):
-#     pass
+def messages(request):
+    current_user = get_current_user(request)
+    if request.method == "POST":
+        message = Messages()
+        message.msg_from =  current_user
+        message.msg_to = None    # Need to figure out msg_to value
+        message.content = request.POST['msgcontent']
+        message.date = datetime.now().strftime("%Y-%m-%d")
+        message.time = datetime.now().strftime("%H-%M-%S")
+        message.save()
+        
+    return render(request, 'messages.html', context={'title':'Messages'})
 
-class MessagesListView(ListView):
-    # template_name = 'message_list.html'
-    # current_user = Friends.objects.filter(username=get_current_user())
-    # connection = Connections.objects.filter(person=current_user.pk)
-    pass
+# class MessagesListView(ListView):
+#     # template_name = 'message_list.html'
+#     # current_user = Friends.objects.filter(username=get_current_user())
+#     # connection = Connections.objects.filter(person=current_user.pk)
+#     pass
     
 
         

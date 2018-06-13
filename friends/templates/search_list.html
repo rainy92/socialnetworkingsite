@@ -14,21 +14,23 @@
           
           {% for friend in friends %}
           <form action="{% url 'sentrequest' friend.username %}" method = "POST">
-            <tr>
-                <td>
-                    {{ friend.first_name }}
-                </td>
-                <td>
-                    {{ friend.last_name }}
-                </td>
-                <td>
-                    {{ friend.username }}
-                </td>
-                <td>
-                    {% csrf_token %}
-                    <input type="submit" name="sendrequest" value="Send Request" />     
-                </td>
-            </tr>
+            {% if friend.username != current_user_name %}
+                <tr>
+                    <td>
+                        {{ friend.first_name }}
+                    </td>
+                    <td>
+                        {{ friend.last_name }}
+                    </td>
+                    <td>
+                        {{ friend.username }}
+                    </td>
+                    <td>
+                        {% csrf_token %}
+                        <input type="submit" name="sendrequest" value="Send Request" />     
+                    </td>
+                </tr>
+            {% endif %}
           </form>
           {% endfor %}
         

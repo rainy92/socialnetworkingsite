@@ -26,10 +26,11 @@ class FriendRequest(models.Model):
     accepted = models.BooleanField(default=False)
 
 
-# class Messages(models.Model):
-#     msg_from = models.ForeignKey(Friends, on_delete=models.CASCADE)
-#     content = models.TextField()
-#     date = models.DateField()
-#     time = models.TimeField()
+class Messages(models.Model):
+    msg_from = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='msg_from')
+    msg_to = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='msg_to')
+    content = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
 
 
