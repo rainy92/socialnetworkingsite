@@ -49,13 +49,11 @@ def get_current_user(request):
         return Friends.objects.get(username = request.session['username'])
 
 def friend_list(request):
-    # current_user = Friends.objects.exclude(Q(username = request.session['username']))
     current_user = get_current_user(request)
     # print(current_user)
     friends = Connections.objects.filter(Q(person=current_user.pk) | Q(connected_to=current_user.pk))
     # print(friends.connected_to)
     return render(request, 'friends_details.html', context={'title':'Login', 'username':request.session['username'], 'friends':friends, 'current_user_name':current_user.username})
-
 
 def search(request):
     if request.method == 'POST':
@@ -105,13 +103,14 @@ def show_requests(request):
 
 def messages(request):
     current_user = get_current_user(request)
+    print(request.POST)
     if request.method == "POST":
         message = Messages()
         message.msg_from =  current_user
         message.msg_to = None    # Need to figure out msg_to value
-        message.content = request.POST['msgcontent']
-        message.date = datetime.now().strftime("%Y-%m-%d")
-        message.time = datetime.now().strftime("%H-%M-%S")
+        message.content = request.POST['msgcontent'] 
+        message.date = datetime.now()
+        message.time = datetime.now()
         message.save()
         
     return render(request, 'messages.html', context={'title':'Messages'})

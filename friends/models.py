@@ -28,7 +28,7 @@ class FriendRequest(models.Model):
 
 class Messages(models.Model):
     msg_from = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='msg_from')
-    msg_to = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='msg_to')
+    msg_to = models.ForeignKey(Friends, on_delete=models.CASCADE, related_name='msg_to', null = True)
     content = models.TextField()
     date = models.DateField()
     time = models.TimeField()

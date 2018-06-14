@@ -13,7 +13,7 @@
           <!-- {{ name }} -->
           
           {% for friend in friends %}
-          <form action="{% url 'messages' %}" method = "POST">
+          <form action="{% url 'messages' %}" method = "GET">
             <tr>
                 <td>
                     {% if friend.connected_to.username == current_user_name %}
